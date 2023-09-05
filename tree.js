@@ -74,7 +74,7 @@ class Tree {
         return this.rootNode;
     }
 
-    logTree(arr) {
+    logTree() {
         const prettyPrint = (node, prefix = "", isLeft = true) => {
             if (node === null) {
               return;
@@ -88,13 +88,35 @@ class Tree {
             }
         };
 
-        return(prettyPrint(this.buildTree(arr)));
+        return(prettyPrint(this.rootNode));
+    }
+
+    insertNode(data) {
+        const node = new Node(data);
+        if (this.rootNode === null) return this.rootNode = node;
+
+        let currentNode = this.rootNode;
+        function placeNode () {
+            if (currentNode.data > data) {
+                if (currentNode.left === null) return currentNode.left = node;
+                currentNode = currentNode.left;
+            } else {
+                if (currentNode.right === null) return currentNode.right = node;  
+                currentNode = currentNode.right;
+            }
+
+            placeNode();
+        }
+
+        placeNode();
     }
 }
 
 const treeOfLife = new Tree();
 const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-treeOfLife.logTree(a);
+
+// treeOfLife.buildTree(a);
+// treeOfLife.logTree();
 
 function preOrder(node) {
     if (node === null) return;
