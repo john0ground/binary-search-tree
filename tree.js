@@ -55,13 +55,13 @@ class Tree {
     createBstRecursive(arr, start, end) {
         if (start > end) return null;
     
-        const mid = (start + end) / 2;
+        const mid = Math.floor((start + end) / 2);
         const root = new Node(arr[mid]);
         if (this.rootNode === null) this.rootNode = root;
-    
+
         root.left = this.createBstRecursive(arr, start, mid - 1);
         root.right = this.createBstRecursive(arr, mid + 1, end);
-    
+        
         return root;
     }
 
@@ -77,7 +77,7 @@ class Tree {
 
 const treeOfLife = new Tree();
 const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
-// orange.buildTree(a);
+// treeOfLife.buildTree(a);
 console.log(treeOfLife.buildTree(a));
 
 function preOrder(node) {
