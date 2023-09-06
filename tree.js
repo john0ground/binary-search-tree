@@ -148,14 +148,13 @@ class Tree {
             }
         }
 
-        //  leaf node
-        if (currentNode.left === null && currentNode.right === null) {
+        
+        if (currentNode.left === null && currentNode.right === null) { //  leaf node
             if (currentNode === this.rootNode) return this.rootNode = null;
             this.detachNodes(lastNode, parentBranch);
-        }
 
-        //  node with 2 children
-        if (currentNode.left !== null && currentNode.right !== null) {
+        } else if ((currentNode.left !== null && currentNode.right !== null)) { //  node with 2 children 
+
             let nextSmallest = currentNode.right;    // traverse to right subtree
             let parent = currentNode;    // parentNode of next smallest
             let directChild = true;   // if nextSmallest is directChild of the node to be deleted
@@ -178,7 +177,18 @@ class Tree {
                 nextSmallest.left = currentNode.left;
                 nextSmallest.right = currentNode.right;
             }
-        }
+        } else {  //  node with 1 child
+            function child() {
+                return currentNode.left? currentNode.left: currentNode.right;
+            }
+            this.attachNodes(lastNode, child(), parentBranch);
+        }   
+
+        
+        
+
+        
+        
     }
 }
 
@@ -187,7 +197,7 @@ const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 321];
 
 treeOfLife.buildTree(a);
 treeOfLife.logTree();
-treeOfLife.deleteNode(8);
+treeOfLife.deleteNode(9);
 treeOfLife.logTree();
 
 // console.log(treeOfLife.deleteNode(23));
