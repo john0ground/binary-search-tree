@@ -110,13 +110,81 @@ class Tree {
 
         placeNode();
     }
+
+    attachNodes(node1, node2, branch) {
+        branch === 'right'? 
+        node1.right = node2:
+        node1.left = node2;
+    }
+
+    detachNodes(node, branch) {
+        branch === 'right'?
+        node.right = null:
+        node.left = null;
+    }
+
+    deleteNode(data) {
+        if (this.rootNode === null) alert('binary tree is empty');
+        let lastNode;
+        let currentNode = this.rootNode;
+        let parentBranch;
+
+        //  search node
+        while(currentNode.data !== data) {
+            if (data < currentNode.data) {
+                if (currentNode.left === null) return alert(`no node with data ${data} in the tree`);   
+                lastNode = currentNode; 
+                currentNode = currentNode.left;
+                parentBranch = 'left';
+            } else {
+                if (currentNode.right === null) return alert(`no node with data ${data} in the tree`);  
+                lastNode = currentNode; 
+                currentNode = currentNode.right;
+                parentBranch = 'right';
+            }
+        }
+
+        //  leaf node
+        if (currentNode.left === null && currentNode.right === null) {
+            if (currentNode === this.rootNode) return this.rootNode = null;
+            this.detachNodes(lastNode, parentBranch);
+        }
+
+        //  node with 2 children
+        if (currentNode.left !== null && currentNode.right !== null) {
+            let nextSmallest = currentNode.right;    // traverse to right subtree
+            let directChild = true;   // if nextSmallest is directChild of the node to be deleted
+
+            while(nextSmallest.left !== null) {
+                nextSmallest = nextSmallest.left;
+                directChild = false;
+            }
+
+            if (directChild) {
+                nextSmallest.left = currentNode.left;
+                this.attachNodes(lastNode, nextSmallest, parentBranch);
+            } else {
+                this.attachNodes(lastNode, nextSmallest, parentBranch);
+                nextSmallest.left = currentNode.left;
+                nextSmallest.right = currentNode.right;
+                currentNode.left = null;
+                currentNode.right = null;
+
+                // this.deleteNode(nextSmallest.data);
+            }
+        }
+    }
 }
 
 const treeOfLife = new Tree();
-const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 321];
 
-// treeOfLife.buildTree(a);
+treeOfLife.buildTree(a);
+treeOfLife.logTree();
+// treeOfLife.deleteNode(67);
 // treeOfLife.logTree();
+
+// console.log(treeOfLife.deleteNode(23));
 
 function preOrder(node) {
     if (node === null) return;
