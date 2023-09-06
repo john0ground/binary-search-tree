@@ -112,6 +112,10 @@ class Tree {
     }
 
     attachNodes(node1, node2, branch) {
+        if (node1 === null) {    // currentNode is root and has no parent
+            return this.rootNode = node2;
+        }
+
         branch === 'right'? 
         node1.right = node2:
         node1.left = node2;
@@ -125,7 +129,7 @@ class Tree {
 
     deleteNode(data) {
         if (this.rootNode === null) alert('binary tree is empty');
-        let lastNode;
+        let lastNode = null;
         let currentNode = this.rootNode;
         let parentBranch;
 
@@ -153,9 +157,11 @@ class Tree {
         //  node with 2 children
         if (currentNode.left !== null && currentNode.right !== null) {
             let nextSmallest = currentNode.right;    // traverse to right subtree
+            let parent = currentNode;    // parentNode of next smallest
             let directChild = true;   // if nextSmallest is directChild of the node to be deleted
 
             while(nextSmallest.left !== null) {
+                parent = nextSmallest;
                 nextSmallest = nextSmallest.left;
                 directChild = false;
             }
@@ -164,13 +170,13 @@ class Tree {
                 nextSmallest.left = currentNode.left;
                 this.attachNodes(lastNode, nextSmallest, parentBranch);
             } else {
+                nextSmallest.right !== null? 
+                parent.left = nextSmallest.right:
+                parent.left = null;
+                
                 this.attachNodes(lastNode, nextSmallest, parentBranch);
                 nextSmallest.left = currentNode.left;
                 nextSmallest.right = currentNode.right;
-                currentNode.left = null;
-                currentNode.right = null;
-
-                // this.deleteNode(nextSmallest.data);
             }
         }
     }
@@ -181,8 +187,8 @@ const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 321];
 
 treeOfLife.buildTree(a);
 treeOfLife.logTree();
-// treeOfLife.deleteNode(67);
-// treeOfLife.logTree();
+treeOfLife.deleteNode(8);
+treeOfLife.logTree();
 
 // console.log(treeOfLife.deleteNode(23));
 
