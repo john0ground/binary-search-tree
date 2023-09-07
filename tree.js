@@ -91,24 +91,43 @@ class Tree {
         return(prettyPrint(this.rootNode));
     }
 
-    insertNode(data) {
-        const node = new Node(data);
-        if (this.rootNode === null) return this.rootNode = node;
+    // insertNode(data) {
+    //     const node = new Node(data);
+    //     if (this.rootNode === null) return this.rootNode = node;
 
-        let currentNode = this.rootNode;
-        function placeNode () {
-            if (currentNode.data > data) {
-                if (currentNode.left === null) return currentNode.left = node;
-                currentNode = currentNode.left;
-            } else {
-                if (currentNode.right === null) return currentNode.right = node;  
-                currentNode = currentNode.right;
-            }
+    //     let currentNode = this.rootNode;
+    //     function placeNode () {
+    //         if (currentNode.data > data) {
+    //             if (currentNode.left === null) return currentNode.left = node;
+    //             currentNode = currentNode.left;
+    //         } else {
+    //             if (currentNode.right === null) return currentNode.right = node;  
+    //             currentNode = currentNode.right;
+    //         }
 
-            placeNode();
+    //         placeNode();
+    //     }
+
+    //     placeNode();
+    // }
+
+    insert(val) {
+        this.rootNode = this.insertNode(this.rootNode, val);
+    }
+
+    insertNode(root, val) {
+        if (root === null) {
+            root = new Node(val);
+            return root;
         }
 
-        placeNode();
+        if (val < root.data) {
+            root.left = this.insertNode(root.left, val);
+        } else if (val > root.data) {
+            root.right = this.insertNode(root.right, val);
+        }
+
+        return root;
     }
 
     delete(val) {
@@ -167,7 +186,7 @@ const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 321];
 
 treeOfLife.buildTree(a);
 treeOfLife.logTree();
-treeOfLife.delete(4);
+treeOfLife.insert(68);
 treeOfLife.logTree();
 
 
