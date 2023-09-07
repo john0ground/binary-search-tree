@@ -111,78 +111,40 @@ class Tree {
         placeNode();
     }
 
-    attachNodes(node1, node2, branch) {
-        if (node1 === null) {    // currentNode is root and has no parent
-            return this.rootNode = node2;
-        }
-
-        branch === 'right'? 
-        node1.right = node2:
-        node1.left = node2;
+    delete(val) {
+        this.rootNode = this.deleteNode(this.rootNode, val);
     }
 
-    detachNodes(node, branch) {
-        branch === 'right'?
-        node.right = null:
-        node.left = null;
+    deleteNode(root, val) {
+        if (root === null) return root;
+        if (val < root.data) {
+            root.left = this.deleteNode(root.left, val);
+        } else if (val > root.data) {
+            root.right = this.deleteNode(root.right, val);
+        } else {
+            // leaf node
+            if (root.left === null && root.right === null) return null;
+
+            // node with one child
+            if (root.left === null) {
+                return root.right;
+            } else if (root.right === null) {
+                return root.left;  
+            }
+
+            // node with 2 children
+            root.data = this.min(root.right);
+            root.right = this.deleteNode(root.right, root.data);
+        }
+        return root;
     }
 
-    deleteNode(data) {
-        if (this.rootNode === null) alert('binary tree is empty');
-        let lastNode = null;
-        let currentNode = this.rootNode;
-        let parentBranch;
-
-        //  search node
-        while(currentNode.data !== data) {
-            if (data < currentNode.data) {
-                if (currentNode.left === null) return alert(`no node with data ${data} in the tree`);   
-                lastNode = currentNode; 
-                currentNode = currentNode.left;
-                parentBranch = 'left';
-            } else {
-                if (currentNode.right === null) return alert(`no node with data ${data} in the tree`);  
-                lastNode = currentNode; 
-                currentNode = currentNode.right;
-                parentBranch = 'right';
-            }
+    min(node) {
+        let succ = node;   // successor
+        while (succ.left !== null) {
+            succ = succ.left;
         }
-
-        
-        if (currentNode.left === null && currentNode.right === null) { //  leaf node
-            if (currentNode === this.rootNode) return this.rootNode = null;
-            this.detachNodes(lastNode, parentBranch);
-
-        } else if ((currentNode.left !== null && currentNode.right !== null)) { //  node with 2 children 
-
-            let nextSmallest = currentNode.right;    // traverse to right subtree
-            let parent = currentNode;    // parentNode of next smallest
-            let directChild = true;   // if nextSmallest is directChild of the node to be deleted
-
-            while(nextSmallest.left !== null) {
-                parent = nextSmallest;
-                nextSmallest = nextSmallest.left;
-                directChild = false;
-            }
-
-            if (directChild) {
-                nextSmallest.left = currentNode.left;
-                this.attachNodes(lastNode, nextSmallest, parentBranch);
-            } else {
-                nextSmallest.right !== null? 
-                parent.left = nextSmallest.right:
-                parent.left = null;
-                
-                this.attachNodes(lastNode, nextSmallest, parentBranch);
-                nextSmallest.left = currentNode.left;
-                nextSmallest.right = currentNode.right;
-            }
-        } else {  //  node with 1 child
-            function child() {
-                return currentNode.left? currentNode.left: currentNode.right;
-            }
-            this.attachNodes(lastNode, child(), parentBranch);
-        }     
+        return succ.data;
     }
 
     find(val) {
@@ -205,7 +167,9 @@ const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 321];
 
 treeOfLife.buildTree(a);
 treeOfLife.logTree();
-console.log(treeOfLife.find(70));
+treeOfLife.delete(4);
+treeOfLife.logTree();
+
 
 function preOrder(node) {
     if (node === null) return;
@@ -213,4 +177,11 @@ function preOrder(node) {
     console.log(node.data);
     preOrder(node.left);
     preOrder(node.right);
+}
+
+function logInorder(node) {
+    if (node === null) return;
+    this.logInorder(node.left);
+    console.log(node.data);
+    this.logInorder(node.right);
 }
