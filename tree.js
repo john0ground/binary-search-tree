@@ -182,13 +182,21 @@ class Tree {
                 return currentNode.left? currentNode.left: currentNode.right;
             }
             this.attachNodes(lastNode, child(), parentBranch);
-        }   
+        }     
+    }
 
-        
-        
+    find(val) {
+        if (this.rootNode === null) return null;
+        let currentNode = this.rootNode;
 
-        
-        
+        while (currentNode !== null) {
+            if (currentNode.data === val) return currentNode;
+            currentNode.data > val?
+            currentNode = currentNode.left: 
+            currentNode = currentNode.right; 
+        }
+
+        return null;
     }
 }
 
@@ -197,10 +205,7 @@ const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 321];
 
 treeOfLife.buildTree(a);
 treeOfLife.logTree();
-treeOfLife.deleteNode(9);
-treeOfLife.logTree();
-
-// console.log(treeOfLife.deleteNode(23));
+console.log(treeOfLife.find(70));
 
 function preOrder(node) {
     if (node === null) return;
