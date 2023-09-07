@@ -91,26 +91,6 @@ class Tree {
         return(prettyPrint(this.rootNode));
     }
 
-    // insertNode(data) {
-    //     const node = new Node(data);
-    //     if (this.rootNode === null) return this.rootNode = node;
-
-    //     let currentNode = this.rootNode;
-    //     function placeNode () {
-    //         if (currentNode.data > data) {
-    //             if (currentNode.left === null) return currentNode.left = node;
-    //             currentNode = currentNode.left;
-    //         } else {
-    //             if (currentNode.right === null) return currentNode.right = node;  
-    //             currentNode = currentNode.right;
-    //         }
-
-    //         placeNode();
-    //     }
-
-    //     placeNode();
-    // }
-
     insert(val) {
         this.rootNode = this.insertNode(this.rootNode, val);
     }
@@ -167,17 +147,16 @@ class Tree {
     }
 
     find(val) {
-        if (this.rootNode === null) return null;
-        let currentNode = this.rootNode;
-
-        while (currentNode !== null) {
-            if (currentNode.data === val) return currentNode;
-            currentNode.data > val?
-            currentNode = currentNode.left: 
-            currentNode = currentNode.right; 
+        function findRecursive(root, data) {
+            if (root === null) return null;
+            if (data < root.data) {
+                return findRecursive(root.left, data);
+            } else if (data > root.data) {
+                return findRecursive(root.right, data);
+            }
+            return root;
         }
-
-        return null;
+        return findRecursive(this.rootNode, val);
     }
 }
 
@@ -186,8 +165,8 @@ const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 321];
 
 treeOfLife.buildTree(a);
 treeOfLife.logTree();
-treeOfLife.insert(68);
-treeOfLife.logTree();
+console.log(treeOfLife.find(67));
+// treeOfLife.logTree();
 
 
 function preOrder(node) {
