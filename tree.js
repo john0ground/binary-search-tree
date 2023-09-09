@@ -158,6 +158,15 @@ class Tree {
         }
         return findRecursive(this.rootNode, val);
     }
+
+    treeHeight(root) {
+        if (root === null) return 0;
+
+        const lHeight = this.treeHeight(root.left);
+        const rHeight = this.treeHeight(root.right);
+
+        return Math.max(lHeight, rHeight) + 1;
+    }
 }
 
 const treeOfLife = new Tree();
@@ -165,7 +174,7 @@ const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 321];
 
 treeOfLife.buildTree(a);
 treeOfLife.logTree();
-console.log(treeOfLife.find(67));
+console.log(treeOfLife.treeHeight(treeOfLife.rootNode));
 // treeOfLife.logTree();
 
 
