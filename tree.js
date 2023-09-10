@@ -167,6 +167,24 @@ class Tree {
 
         return Math.max(lHeight, rHeight) + 1;
     }
+
+    levelOrder() {
+        const h = this.treeHeight(this.rootNode);
+        let i;
+        for (i = 1; i <= h; i++) {
+            this.printCurrentLevel(this.rootNode, i);
+        }
+    }
+
+    printCurrentLevel(root, level) {
+        if (root === null) return;
+        if (level === 1) {
+            console.log(root.data + ' ');
+        } else if (level > 1) {
+            this.printCurrentLevel(root.left, level - 1);
+            this.printCurrentLevel(root.right, level - 1);
+        }
+    }
 }
 
 const treeOfLife = new Tree();
@@ -174,7 +192,7 @@ const a = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 321];
 
 treeOfLife.buildTree(a);
 treeOfLife.logTree();
-console.log(treeOfLife.treeHeight(treeOfLife.rootNode));
+console.log(treeOfLife.levelOrder());
 // treeOfLife.logTree();
 
 
